@@ -26,17 +26,18 @@ export default function GetTheWeatherForecast () {
     }, [])
 
   
-    const getWeather = async () => {
-        const res = await request(`https://api.openweathermap.org/data/2.5/weather?lat=59.9010&lon=30.3653&appid=1086a0d515e8591184f3ebfc4b4cd1df`);
-       console.log(res);
-        // return _transformWeather(res.data.results[0]);
+    const getWeather = async (lat, lon) => {
+        const res = await request(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=ru&appid=5c811b70da212a3f66e65dcfc0a49db7`);
+        console.log(JSON.parse(JSON.stringify(res)))
+   
+        return _transformWeather(JSON.parse(JSON.stringify(res))[0]);
     }
     
-    // const _transformWeather = () => {
-    //     return {
-                
-    //     }
-    // }
+    const _transformWeather = (res) => {
+        return {
+            
+        }
+    }
     return {getWeather}
 
 }

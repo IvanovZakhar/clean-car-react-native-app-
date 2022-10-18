@@ -1,9 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import MyLocation from './services/My-location';
 
 
 export default function App() {
+  const {geoposition, setGeopositon} = useState(null);
+   useEffect(() => {
+    MyLocation()
+      .then(setGeopositon())
+   }, [])
+
+  
   return (
     <View style={styles.container}>
       <MyLocation/>

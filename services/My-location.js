@@ -28,8 +28,11 @@ export default function MyLocation() {
   } else if (location) {
     let result = JSON.parse(JSON.stringify(location));
     // text = Array.from(result)
-    getWeather();
-    console.log(result.coords.latitude, result.coords.longitude)
+    getWeather(result.coords.latitude, result.coords.longitude);
+    return {
+      lat: result.coords.latitude, 
+      lon: result.coords.longitude
+    }
  
   }
 
