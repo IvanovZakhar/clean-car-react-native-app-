@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Platform, Text, View, StyleSheet } from 'react-native';
 import GetTheWeatherForecast from './get-the-weather-forecast';
 import * as Location from 'expo-location';
@@ -6,6 +6,8 @@ import * as Location from 'expo-location';
 export default function MyLocation() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [locality, setLocality] = useState(null);
+
   const {getWeather} = GetTheWeatherForecast();
 
   useEffect(() => {
@@ -18,31 +20,39 @@ export default function MyLocation() {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      setLocation(JSON.parse(JSON.stringify(location)));
+      console.log('ok')
+      getWeather(location.coords.latitude, location.coords.longitude)
+      .then(data => setLocality(data))
     })();
+  
+
+
   }, []);
 
-  let text = 'Waiting..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    let result = JSON.parse(JSON.stringify(location));
-    // text = Array.from(result)
-    getWeather(result.coords.latitude, result.coords.longitude);
-    return {
-      lat: result.coords.latitude, 
-      lon: result.coords.longitude
-    }
- 
-  }
 
- 
+  function renderItem (item){
+    const items = item.map(item => {
+      return(
+        <Text>
+          {item.city}
+
+        </Text>
+      )
+    })
+    return(
+      <Text style={styles.paragraph}>
+       Ваше место положение {items}
+      {/* {locality.city.name} */}
+      </Text>
+    )
+  }
+  
+  const item = renderItem(locality)
+
   return (
     <View style={styles.container}>
-      <Text style={styles.paragraph}>
-       
-        {text}
-      </Text>
+      {item}
     </View>
   );
 }

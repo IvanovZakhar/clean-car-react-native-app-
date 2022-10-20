@@ -28,14 +28,14 @@ export default function GetTheWeatherForecast () {
   
     const getWeather = async (lat, lon) => {
         const res = await request(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&lang=ru&appid=5c811b70da212a3f66e65dcfc0a49db7`);
-        console.log(JSON.parse(JSON.stringify(res)))
-   
-        return _transformWeather(JSON.parse(JSON.stringify(res))[0]);
+        // console.log(JSON.parse(JSON.stringify(res)))
+        return _transformWeather(JSON.parse(JSON.stringify(res)));
     }
     
     const _transformWeather = (res) => {
         return {
-            
+            city: res.city,
+            list: res.list
         }
     }
     return {getWeather}

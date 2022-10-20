@@ -5,16 +5,20 @@ import MyLocation from './services/My-location';
 
 
 export default function App() {
-  const {geoposition, setGeopositon} = useState(null);
-   useEffect(() => {
-    MyLocation()
-      .then(setGeopositon())
-   }, [])
+  // const {geoposition, setGeopositon} = useState(null);
+  //  useEffect(() => {
+  //     const {lat, lon} = MyLocation()
+     
+  //  }, [])
 
   
   return (
     <View style={styles.container}>
       <MyLocation/>
+      <Text style={styles.container}>
+        hello world
+       {/* {locality.city.name} */}
+     </Text>
       <StatusBar style="auto" />
     </View>
   );
