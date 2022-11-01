@@ -15,10 +15,6 @@ export default function App() {
   return (
     <View style={styles.container}>
       <MyLocation/>
-      <Text style={styles.container}>
-        hello world
-       {/* {locality.city.name} */}
-     </Text>
       <StatusBar style="auto" />
     </View>
   );

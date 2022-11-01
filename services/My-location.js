@@ -1,7 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Platform, Text, View, StyleSheet } from 'react-native';
+import { Platform, Text, View, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import GetTheWeatherForecast from './get-the-weather-forecast';
 import * as Location from 'expo-location';
+
+
 
 export default function MyLocation() {
   const [location, setLocation] = useState(null);
@@ -32,28 +34,35 @@ export default function MyLocation() {
 
 
   function renderItem (item){
-    const items = item.map(item => {
-      return(
-        <Text>
-          {item.city}
+    if(item){
+       return(
+  
+              <Text style={styles.paragraph}>
+                
+                Ваше место положение {item.city.name}
+              {/* {locality.city.name} */}
+              </Text>
+    
+   
+       )
+    }
 
-        </Text>
-      )
-    })
-    return(
-      <Text style={styles.paragraph}>
-       Ваше место положение {items}
-      {/* {locality.city.name} */}
-      </Text>
-    )
+   
   }
   
   const item = renderItem(locality)
 
   return (
+   
     <View style={styles.container}>
+
+    <ImageBackground source={require('../img/rain.jpg')} resizeMode="cover" style={styles.imgStyle}>
       {item}
+    </ImageBackground>
+
+
     </View>
+ 
   );
 }
 
@@ -64,11 +73,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  imgStyle:{
+    width: Dimensions.get('window').width - 1,
+    height: Dimensions.get('window').height - 1
+  },
   paragraph: {
-    marginLeft: 10,
-    marginRight: 10,
-    backgroundColor: '#fff',
+    flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   }
 }); 
