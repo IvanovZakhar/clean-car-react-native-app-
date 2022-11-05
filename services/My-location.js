@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Platform, Text, View, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+import { useFonts } from 'expo-font';
 import GetTheWeatherForecast from './get-the-weather-forecast';
 import * as Location from 'expo-location';
 
@@ -9,7 +10,13 @@ export default function MyLocation() {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [locality, setLocality] = useState(null);
+  const [fontsLoaded] = useFonts({
+    'RobotoMedium': require('../fonts/Roboto-Medium.ttf'),
+    'RobotoRegular': require('../fonts/Roboto-Regular.ttf'),
+    'RobotoLight':  require('../fonts/Roboto-Light.ttf'),
+  });
 
+  // Локация
   const {getWeather} = GetTheWeatherForecast();
 
   useEffect(() => {
@@ -33,16 +40,38 @@ export default function MyLocation() {
   }, []);
 
 
+  let i = false
+
   function renderItem (item){
     if(item){
-       return(
+ 
   
-              <Text style={styles.paragraph}>
-                
-                Ваше место положение {item.city.name}
-              {/* {locality.city.name} */}
-              </Text>
-    
+      // Проверка для информации о помывки авто
+     item.list.map(item => {
+        if( item.weather[0].main === 'Rain'){
+           return i = !i
+        }
+      })
+
+      return(
+        <>
+          <ImageBackground source={item.list[0].weather[0].main === 'Clouds' ? require('../img/rain.jpg') : require('../img/clear-weather.jpg')} resizeMode="cover" style={styles.imgStyle}>
+      
+            <Text style={styles.city}>  
+                {item.city.name}
+            </Text>
+            <Text style={styles.tempNow}>  
+              {`${Math.round(item.list[0].main.temp)}°`}
+            </Text>
+            <Text style={styles.weatherDescripthion}>  
+              {item.list[0].weather[0].description}
+            </Text>
+            <Text style={styles.info}>  
+              {i ? 'Помой машину в следующий раз' : 'Отличное время для помывки авто'}
+            </Text>
+          </ImageBackground>
+        </>
+        
    
        )
     }
@@ -55,12 +84,7 @@ export default function MyLocation() {
   return (
    
     <View style={styles.container}>
-
-    <ImageBackground source={require('../img/rain.jpg')} resizeMode="cover" style={styles.imgStyle}>
       {item}
-    </ImageBackground>
-
-
     </View>
  
   );
@@ -72,14 +96,40 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative'
   },
   imgStyle:{
-    width: Dimensions.get('window').width - 1,
-    height: Dimensions.get('window').height - 1
+    width:  Dimensions.get('window').width,
+    height: Dimensions.get('window').height
+    // width: Dimensions.get('window').width ,
+    // height: 
   },
-  paragraph: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+  city: {
+    position: 'absolute',
+    alignSelf: 'center',
+    top: 100,
+    fontFamily: 'RobotoRegular',
+    fontSize: 30
+  },
+  tempNow:{
+    position: 'absolute',
+    top: 180,
+    alignSelf: 'center',
+    fontFamily: 'RobotoRegular',
+    fontSize: 30
+  },
+  weatherDescripthion:{
+    position: 'absolute',
+    top: 230,
+    alignSelf: 'center',
+    fontFamily: 'RobotoLight',
+    fontSize: 30
+  }, 
+ info:{
+    position: 'absolute',
+    top: 350,
+    alignSelf: 'center',
+    fontFamily: 'RobotoLight',
+    fontSize: 25
   }
 }); 
