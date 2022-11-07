@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Platform, Text, View, StyleSheet, ImageBackground, Dimensions } from 'react-native';
 import { useFonts } from 'expo-font';
+import { Entypo } from '@expo/vector-icons'; 
 import GetTheWeatherForecast from './get-the-weather-forecast';
 import * as Location from 'expo-location';
-
 
 
 export default function MyLocation() {
@@ -40,23 +40,13 @@ export default function MyLocation() {
   }, []);
 
 
-  let i = false
 
   function renderItem (item){
     if(item){
- 
-  
-      // Проверка для информации о помывки авто
-     item.list.map(item => {
-        if( item.weather[0].main === 'Rain'){
-           return i = !i
-        }
-      })
-
+      const weather = item.list.some(i => i.weather[0].main == 'Rain')
       return(
         <>
           <ImageBackground source={item.list[0].weather[0].main === 'Clouds' ? require('../img/rain.jpg') : require('../img/clear-weather.jpg')} resizeMode="cover" style={styles.imgStyle}>
-      
             <Text style={styles.city}>  
                 {item.city.name}
             </Text>
@@ -67,12 +57,10 @@ export default function MyLocation() {
               {item.list[0].weather[0].description}
             </Text>
             <Text style={styles.info}>  
-              {i ? 'Помой машину в следующий раз' : 'Отличное время для помывки авто'}
+              {weather ? 'Помой машину в следующий раз' : 'Отличное время для помывки авто'}
             </Text>
           </ImageBackground>
         </>
-        
-   
        )
     }
 
@@ -84,6 +72,7 @@ export default function MyLocation() {
   return (
    
     <View style={styles.container}>
+      <Entypo/>
       {item}
     </View>
  
